@@ -164,6 +164,8 @@ deploy() {
   local path=`config_get path`
   log deploying $ref
 
+  hook pre-deploy
+
   # fetch source
   run "cd $path/source && git fetch origin && git reset --hard $ref"
   test $? -eq 0 || abort 'fetch failed'
@@ -178,7 +180,6 @@ deploy() {
       >> $path/.deploys"
   test $? -eq 0 || abort 'deploy log append failed'
 
-  # post-deploy
   hook post-deploy
 
   # done

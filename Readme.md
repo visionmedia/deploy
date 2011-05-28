@@ -85,9 +85,15 @@
 
 ### post-deploy
 
-    Post-deployment command.
+    Post-deployment command, executed relative to `path`.
     
-        post-deploy /var/www/myapp.com/restart
+        post-deploy ./restart
+
+### pre-deploy
+
+     Pre-deployment command, executed relative to `path`.
+
+        pre-deploy 
 
 ## License 
 
