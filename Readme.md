@@ -7,6 +7,31 @@
 
     $ make install
 
+## Usage
+
+
+      Usage: deploy [options] <env> [command]
+
+      Options:
+
+        -C, --chdir <path>   change the working directory to <path>
+        -c, --config <path>  set config path defaults to ./deploy.conf
+        -V, --version        output program version
+        -h, --help           output help information
+
+      Commands:
+
+        setup                run remote setup commands
+        deploy [rev]         deploy to [rev] or HEAD
+        revert [n]           revert to [n]th last deployment or 1
+        config [key]         output config file or [key]
+        curr[ent]            output current release commit
+        prev[ious]           output previous release commit
+        exec|run <cmd>       execute the given <cmd>
+        list                 list previous deploy commits
+
+
+
 ## Configuration
 
  By default `deploy(1)` will look for _./deploy.conf_, consisting of one or more environments, `[stage]`, `[production]`, etc, followed by directives.
