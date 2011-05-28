@@ -41,9 +41,9 @@
     user deployer
     host n.n.n.n
     repo git@github.com:visionmedia/express.git
-    path /home/ec2-user/deploy-test
+    path /var/www/myapp.com
     branch origin/master
-    post-deploy /home/ec2-user/deploy-test/update
+    post-deploy /var/www/myapp.com/update.sh
 
 ## Directives
 
