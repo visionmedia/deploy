@@ -24,6 +24,7 @@
       Commands:
 
         setup                run remote setup commands
+        update               update deploy to the latest release
         deploy [rev]         deploy to [rev] or HEAD
         revert [n]           revert to [n]th last deployment or 1
         config [key]         output config file or [key]
