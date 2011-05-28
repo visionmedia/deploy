@@ -223,7 +223,7 @@ while test $# -ne 0; do
   case $arg in
     -h|--help) usage; exit ;;
     -V|--version) version; exit ;;
-    -c|--config) set_config_path $1 ;;
+    -c|--config) set_config_path $1; shift ;;
     -C|--chdir) WD=$1; CONFIG=$WD/deploy.conf ;;
     run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
     curr|current) require_env; current_commit; exit ;;
