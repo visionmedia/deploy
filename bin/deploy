@@ -130,9 +130,11 @@ setup() {
   local repo=`config_get repo`
   local branch=`config_get branch`
   run "mkdir -p $path/{shared/{logs,pids},source}"
+  test $? -eq 0 || abort 'setup paths failed'
   log running setup
   log cloning $repo
   run "git clone $repo $path/source"
+  test $? -eq 0 || abort "failed to clone"
   log setup complete
 }
 
@@ -228,7 +230,7 @@ while test $# -ne 0; do
     -h|--help) usage; exit ;;
     -V|--version) version; exit ;;
     -c|--config) set_config_path $1; shift ;;
-    -C|--chdir) WD=$1; CONFIG=$WD/deploy.conf ;;
+    -C|--chdir) WD=$1; CONFIG=$WD/deploy.conf; shift ;;
     run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
     curr|current) require_env; current_commit; exit ;;
     prev|previous) require_env; nth_deploy_commit 2; exit ;;
