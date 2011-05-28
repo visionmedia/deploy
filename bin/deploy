@@ -121,6 +121,24 @@ config() {
 }
 
 #
+# Execute hook <name> relative to the path configured.
+#
+
+hook() {
+  test -n "$1" || abort 'hook name required'
+  local hook=$1
+  local path=`config_get path`
+  local cmd=`config_get $hook`
+  if test -n "$cmd"; then
+    log "executing $hook $ $cmd"
+    run "cd $path && $cmd"
+    test $? -eq 0 || abort "$hook hook failed"
+  else
+    log "hook $hook does not exist"
+  fi
+}
+
+#
 # Run setup.
 #
 
@@ -161,12 +179,7 @@ deploy() {
   test $? -eq 0 || abort 'deploy log append failed'
 
   # post-deploy
-  local cmd=`config_get post-deploy`
-  if test -n "$cmd"; then
-    log "executing post-deploy $ $cmd"
-    run "cd $path && $cmd"
-    test $? -eq 0 || abort 'post-deploy hook failed'
-  fi
+  hook post-deploy
 
   # done
   log deploy complete
