@@ -7,6 +7,63 @@
 
     $ make install
 
+## Configuration
+
+ By default `deploy(1)` will look for _./deploy.conf_, consisting of one or more environments, `[stage]`, `[production]`, etc, followed by directives.
+
+    [stage]
+    key /path/to/some.pem
+    user deployer
+    host n.n.n.n
+    repo git@github.com:visionmedia/express.git
+    path /home/ec2-user/deploy-test
+    branch origin/master
+    post-deploy /home/ec2-user/deploy-test/update
+
+## Directives
+
+### key (optional)
+
+  Path to identity file used by `ssh -i`.
+  
+      key /path/to/some.pem
+
+### user
+
+   User for deployment.
+   
+       user deployer
+
+### host
+
+   Server hostname.
+   
+       host 50.17.255.50
+
+### repo
+
+   GIT repository to clone.
+   
+       repo git@github.com:visionmedia/express.git
+
+### path
+
+    Deployment path.
+    
+        path /var/www/myapp.com
+
+### branch
+
+    GIT branch.
+    
+        branch origin/master
+
+### post-deploy
+
+    Post-deployment command.
+    
+        post-deploy /var/www/myapp.com/restart
+
 ## License 
 
 (The MIT License)

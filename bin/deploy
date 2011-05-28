@@ -98,7 +98,7 @@ version() {
 #
 
 run() {
-  local url="`config_get user`@`config_get addr`"
+  local url="`config_get user`@`config_get host`"
   local key=`config_get key`
   if test -n "$key"; then
     local shell="ssh -i $key $url"
@@ -156,10 +156,10 @@ deploy() {
       echo \`git rev-parse --short HEAD\` \
       >> $path/.deploys"
 
-  # command
-  local cmd=`config_get command`
+  # post-deploy
+  local cmd=`config_get post-deploy`
   if test -n "$cmd"; then
-    log "executing $ $cmd"
+    log "executing post-deploy $ $cmd"
     run "cd $path/current && $cmd"
   fi
 
