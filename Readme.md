@@ -7,7 +7,7 @@
 
     $ make install
 
-    Visit the [wiki](https://github.com/visionmedia/deploy/wiki) for additional usage information.
+  Visit the [wiki](https://github.com/visionmedia/deploy/wiki) for additional usage information.
 
 ## Usage
 
@@ -55,45 +55,45 @@
 
 ### user
 
-   User for deployment.
+  User for deployment.
    
        user deployer
 
 ### host
 
-   Server hostname.
+  Server hostname.
    
        host 50.17.255.50
 
 ### repo
 
-   GIT repository to clone.
+  GIT repository to clone.
    
        repo git@github.com:visionmedia/express.git
 
 ### path
 
-    Deployment path.
+  Deployment path.
     
         path /var/www/myapp.com
 
 ### branch
 
-    GIT branch.
+  GIT branch.
     
         branch origin/master
 
 ### post-deploy
 
-    Post-deployment command, executed relative to `path`.
+  Post-deployment command, executed relative to `path`.
     
-        post-deploy ./restart
+      post-deploy ./restart
 
 ### pre-deploy
 
-     Pre-deployment command, executed relative to `path`.
+  Pre-deployment command, executed relative to `path`.
 
-        pre-deploy 
+      pre-deploy 
 
 ## License 
 
