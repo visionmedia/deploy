@@ -1,0 +1,245 @@
+#!/usr/bin/env bash
+
+VERSION="0.0.1"
+CONFIG=./deploy.conf
+LOG=/tmp/deploy.log
+ENV=
+WD=.
+
+#
+# Output usage information.
+#
+
+usage() {
+  cat <<-EOF
+
+  Usage: deploy [options] <env> [command]
+
+  Options:
+
+    -C, --chdir <path>   change the working directory to <path>
+    -c, --config <path>  set config path defaults to ./deploy.conf
+    -V, --version        output program version
+    -h, --help           output help information
+
+  Commands:
+
+    setup                run remote setup commands
+    deploy [rev]         deploy to [rev] or HEAD
+    revert [n]           revert to [n]th last deployment or 1
+    config [key]         output config file or [key]
+    curr[ent]            output current release commit
+    prev[ious]           output previous release commit
+    exec|run <cmd>       execute the given <cmd>
+    list                 list previous deploy commits
+
+EOF
+}
+
+#
+# Abort with <msg>
+#
+
+abort() {
+  echo
+  echo "  $@" 1>&2
+  echo
+  exit 1
+}
+
+#
+# Log <msg>.
+#
+
+log() {
+  echo "... $@"
+}
+
+#
+# Set configuration file <path>.
+#
+
+set_config_path() {
+  test -f $1 || abort 'invalid --config path'
+  CONFIG=$1
+}
+
+#
+# Check if config <section> exists.
+#
+
+config_section() {
+  grep "^\[$1" $CONFIG &> /dev/null
+}
+
+#
+# Get config value by <key>.
+#
+
+config_get() {
+  local key=$1
+  test -n "$key" \
+    && grep "^\[$ENV" -A 20 $CONFIG \
+    | grep "^$key" \
+    | head -n 1 \
+    | cut -d ' ' -f 2
+}
+
+#
+# Output version.
+#
+
+version() {
+  echo $VERSION
+}
+
+#
+# Run the given remote <cmd>.
+#
+
+run() {
+  local url="`config_get user`@`config_get addr`"
+  local key=`config_get key`
+  if test -n "$key"; then
+    local shell="ssh -i $key $url"
+  else
+    local shell="ssh $url"
+  fi
+  echo $shell $@ >> $LOG
+  $shell $@
+}
+
+#
+# Output config or [key].
+#
+
+config() {
+  if test $# -eq 0; then
+    cat $CONFIG
+  else
+    config_get $1
+  fi
+}
+
+#
+# Run setup.
+#
+
+setup() {
+  local path=`config_get path`
+  local repo=`config_get repo`
+  local branch=`config_get branch`
+  run "mkdir -p $path/{shared/{logs,pids},source}"
+  log running setup
+  log cloning $repo
+  run "git clone $repo $path/source"
+  log setup complete
+}
+
+#
+# Deploy <ref>.
+#
+
+deploy() {
+  local ref=$1
+  local path=`config_get path`
+  log deploying $ref
+
+  # fetch source
+  run "cd $path/source && git fetch origin && git reset --hard $ref"
+
+  # link current
+  run "ln -sf $path/source $path/current"
+
+  # deploy log
+  run "cd $path/source && \
+      echo \`git rev-parse --short HEAD\` \
+      >> $path/.deploys"
+
+  # command
+  local cmd=`config_get command`
+  if test -n "$cmd"; then
+    log "executing $ $cmd"
+    run "cd $path/current && $cmd"
+  fi
+
+  # done
+  log deploy complete
+}
+
+#
+# Get current commit.
+#
+
+current_commit() {
+  local path=`config_get path`
+  run "cd $path/source && \
+      git rev-parse --short HEAD"
+}
+
+#
+# Get <n>th deploy commit.
+#
+
+nth_deploy_commit() {
+  local n=$1
+  local path=`config_get path`
+  run "cat $path/.deploys | tail -n $n | head -n 1 | cut -d ' ' -f 1"
+}
+
+#
+# List deploys.
+#
+
+list_deploys() {
+  local path=`config_get path`
+  run "cat $path/.deploys"
+}
+
+#
+# Revert to the <n>th last deployment.
+#
+
+revert_to() {
+  local n=$1
+  log "reverting $((n - 1)) deploy(s)"
+  local commit=`nth_deploy_commit $n`
+  deploy $commit
+}
+
+#
+# Require environment arg.
+#
+
+require_env() {
+  config_section $ENV || abort "[$ENV] config section not defined"
+  test -z "$ENV" && abort "<env> required"
+}
+
+# parse argv
+
+while test $# -ne 0; do
+  arg=$1; shift
+  case $arg in
+    -h|--help) usage; exit ;;
+    -V|--version) version; exit ;;
+    -c|--config) set_config_path $1 ;;
+    -C|--chdir) WD=$1; CONFIG=$WD/deploy.conf ;;
+    run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
+    curr|current) require_env; current_commit; exit ;;
+    prev|previous) require_env; nth_deploy_commit 2; exit ;;
+    revert) require_env; revert_to ${1-2}; exit ;;
+    setup) require_env; setup $@; exit ;;
+    list) require_env; list_deploys; exit ;;
+    config) config $@; exit ;;
+    *) ENV=$arg ;;
+  esac
+done
+
+require_env
+
+# chdir
+test "$WD" != "." && cd $WD && log cd $WD
+
+# deploy
+deploy `config_get branch`
