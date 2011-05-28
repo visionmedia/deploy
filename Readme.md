@@ -1,11 +1,13 @@
 
 # deploy
 
-  Minimalistic shell deployment shell script
+  Minimalistic shell deployment shell script.
 
 ## Installation
 
     $ make install
+
+    Visit the [wiki](https://github.com/visionmedia/deploy/wiki) for additional usage information.
 
 ## Usage
 
@@ -29,8 +31,6 @@
         prev[ious]           output previous release commit
         exec|run <cmd>       execute the given <cmd>
         list                 list previous deploy commits
-
-
 
 ## Configuration
 
