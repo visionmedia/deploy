@@ -164,7 +164,7 @@ deploy() {
   local cmd=`config_get post-deploy`
   if test -n "$cmd"; then
     log "executing post-deploy $ $cmd"
-    run "cd $path/current && $cmd"
+    run "cd $path && $cmd"
     test $? -eq 0 || abort 'post-deploy hook failed'
   fi
 
@@ -207,8 +207,8 @@ list_deploys() {
 
 revert_to() {
   local n=$1
-  log "reverting $((n - 1)) deploy(s)"
-  local commit=`nth_deploy_commit $n`
+  log "reverting $n deploy(s)"
+  local commit=`nth_deploy_commit $((n + 1))`
   deploy $commit
 }
 
@@ -233,7 +233,7 @@ while test $# -ne 0; do
     run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
     curr|current) require_env; current_commit; exit ;;
     prev|previous) require_env; nth_deploy_commit 2; exit ;;
-    revert) require_env; revert_to ${1-2}; exit ;;
+    revert) require_env; revert_to ${1-1}; exit ;;
     setup) require_env; setup $@; exit ;;
     list) require_env; list_deploys; exit ;;
     config) config $@; exit ;;
