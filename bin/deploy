@@ -4,7 +4,6 @@ VERSION="0.0.1"
 CONFIG=./deploy.conf
 LOG=/tmp/deploy.log
 ENV=
-WD=.
 
 #
 # Output usage information.
@@ -230,7 +229,7 @@ while test $# -ne 0; do
     -h|--help) usage; exit ;;
     -V|--version) version; exit ;;
     -c|--config) set_config_path $1; shift ;;
-    -C|--chdir) WD=$1; CONFIG=$WD/deploy.conf; shift ;;
+    -C|--chdir) log cd $1; cd $1; shift ;;
     run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
     curr|current) require_env; current_commit; exit ;;
     prev|previous) require_env; nth_deploy_commit 2; exit ;;
@@ -243,9 +242,6 @@ while test $# -ne 0; do
 done
 
 require_env
-
-# chdir
-test "$WD" != "." && cd $WD && log cd $WD
 
 # deploy
 deploy `config_get branch`
