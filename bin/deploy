@@ -17,7 +17,7 @@ usage() {
   Options:
 
     -C, --chdir <path>   change the working directory to <path>
-    -c, --config <path>  set config path defaults to ./deploy.conf
+    -c, --config <path>  set config path. defaults to ./deploy.conf
     -V, --version        output program version
     -h, --help           output help information
 
