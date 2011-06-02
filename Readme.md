@@ -94,7 +94,7 @@
 
   Pre-deployment command, executed relative to `path`.
 
-      pre-deploy 
+      pre-deploy ./something
 
 ## License 
 
