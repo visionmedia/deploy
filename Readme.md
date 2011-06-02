@@ -25,13 +25,13 @@
 
         setup                run remote setup commands
         update               update deploy to the latest release
-        deploy [rev]         deploy to [rev] or HEAD
         revert [n]           revert to [n]th last deployment or 1
         config [key]         output config file or [key]
         curr[ent]            output current release commit
         prev[ious]           output previous release commit
         exec|run <cmd>       execute the given <cmd>
         list                 list previous deploy commits
+        [ref]                deploy to [ref] or HEAD
 
 ## Configuration
 
