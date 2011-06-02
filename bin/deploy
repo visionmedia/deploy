@@ -3,6 +3,7 @@
 VERSION="0.0.2"
 CONFIG=./deploy.conf
 LOG=/tmp/deploy.log
+REF=
 ENV=
 
 #
@@ -269,11 +270,17 @@ while test $# -ne 0; do
     list) require_env; list_deploys; exit ;;
     update) update; exit ;;
     config) config $@; exit ;;
-    *) ENV=$arg ;;
+    *)
+      if test -z "$ENV"; then
+        ENV=$arg;
+      else
+        REF=$arg;
+      fi
+      ;;
   esac
 done
 
 require_env
 
 # deploy
-deploy `config_get branch`
+deploy ${REF:-`config_get branch`}
