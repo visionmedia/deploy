@@ -173,7 +173,7 @@ deploy() {
   test $? -eq 0 || abort 'fetch failed'
 
   # link current
-  run "ln -sf $path/source $path/current"
+  run "ln -sfn $path/source $path/current"
   test $? -eq 0 || abort 'symlink failed'
 
   # deploy log
