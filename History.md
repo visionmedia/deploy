@@ -1,4 +1,10 @@
 
+0.1.0 / 2011-06-06 
+==================
+
+  * Added; `tee` hook command stdio into __$LOG__
+  * Changed hook message, looked like an error before
+
 0.0.4 / 2011-06-03 
 ==================
 
