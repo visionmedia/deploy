@@ -136,7 +136,7 @@ hook() {
     run "cd $path && $cmd"
     test $? -eq 0 || abort "$hook hook failed"
   else
-    log "hook $hook does not exist"
+    log "hook $hook (not-found)"
   fi
 }
 
