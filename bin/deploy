@@ -133,7 +133,7 @@ hook() {
   local cmd=`config_get $hook`
   if test -n "$cmd"; then
     log "executing $hook $ $cmd"
-    run "cd $path && $cmd"
+    run "cd $path && $cmd 2>&1 | tee -a $LOG"
     test $? -eq 0 || abort "$hook hook failed"
   else
     log "hook $hook (not-found)"
