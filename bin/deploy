@@ -186,7 +186,11 @@ deploy() {
   hook post-deploy || abort "post-deploy hook failed"
 
   if test $TEST -eq 1; then
-    hook test || abort "test hook failed"
+    hook test
+    if test $? -ne 0; then
+      log "tests failed, reverting deploy"
+      quickly_revert_to 1 && log "revert complete" && exit
+    fi
   else
     log 'ignoring tests'
   fi
@@ -222,6 +226,17 @@ nth_deploy_commit() {
 list_deploys() {
   local path=`config_get path`
   run "cat $path/.deploys"
+}
+
+#
+# Revert to the <n>th last deployment, ignoring tests.
+#
+
+quickly_revert_to() {
+  local n=$1
+  log "quickly reverting $n deploy(s)"
+  local commit=`nth_deploy_commit $((n + 1))`
+  TEST=0 deploy $commit
 }
 
 #
