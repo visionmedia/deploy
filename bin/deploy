@@ -3,6 +3,7 @@
 VERSION="0.1.0"
 CONFIG=./deploy.conf
 LOG=/tmp/deploy.log
+TEST=1
 REF=
 ENV=
 
@@ -184,7 +185,11 @@ deploy() {
 
   hook post-deploy || abort "post-deploy hook failed"
 
-  hook test || abort "test hook failed"
+  if test $TEST -eq 1; then
+    hook test || abort "test hook failed"
+  else
+    log 'ignoring tests'
+  fi
 
   # done
   log deploy complete
