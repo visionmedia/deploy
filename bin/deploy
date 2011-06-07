@@ -134,7 +134,10 @@ hook() {
   local cmd=`config_get $hook`
   if test -n "$cmd"; then
     log "executing $hook \`$cmd\`"
-    run "cd $path/current && $cmd 2>&1 | tee -a $LOG; exit \${PIPESTATUS[0]}"
+    run "cd $path/current; \
+      SHARED=\"$path/shared\" \
+      $cmd 2>&1 | tee -a $LOG; \
+      exit \${PIPESTATUS[0]}"
     test $? -eq 0
   else
     log "hook $hook"
