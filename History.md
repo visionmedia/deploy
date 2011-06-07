@@ -1,4 +1,15 @@
 
+0.2.0 / 2011-06-07 
+==================
+
+  * Added `$SHARED` env var
+  * Added; revert on failed tests
+  * Added `test` hook
+  * Changed; hooks are executed relative to `$path/current`
+  * Changed; use ○ instead of ... for logs
+  * Fixed hook pipe exit
+  * Fixed hook commands cut issue
+
 0.1.0 / 2011-06-06 
 ==================
 
