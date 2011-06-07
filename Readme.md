@@ -84,17 +84,24 @@
     
         branch origin/master
 
+### pre-deploy
+
+  Pre-deployment command, executed relative to `path`.
+
+      pre-deploy ./something
+
 ### post-deploy
 
   Post-deployment command, executed relative to `path`.
     
       post-deploy ./restart
 
-### pre-deploy
+### test
 
-  Pre-deployment command, executed relative to `path`.
+  Post-deployment test command, executed relative to `path`,
+  after `post-deploy`, useful for ... running tests :).
 
-      pre-deploy ./something
+      test ./something
 
 ## License 
 
