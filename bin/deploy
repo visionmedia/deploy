@@ -134,7 +134,7 @@ hook() {
   if test -n "$cmd"; then
     log "executing $hook \`$cmd\`"
     run "cd $path && $cmd 2>&1 | tee -a $LOG; exit \${PIPESTATUS[0]}"
-    test $? -eq 0 || abort "$hook hook failed"
+    test $? -eq 0
   else
     log "hook $hook"
   fi
@@ -166,7 +166,7 @@ deploy() {
   local path=`config_get path`
   log deploying $ref
 
-  hook pre-deploy
+  hook pre-deploy || abort "pre-deploy hook failed"
 
   # fetch source
   run "cd $path/source && git fetch origin && git reset --hard $ref"
@@ -182,9 +182,9 @@ deploy() {
       >> $path/.deploys"
   test $? -eq 0 || abort 'deploy log append failed'
 
-  hook post-deploy
+  hook post-deploy || abort "post-deploy hook failed"
 
-  hook test
+  hook test || abort "test hook failed"
 
   # done
   log deploy complete
