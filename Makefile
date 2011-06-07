@@ -2,7 +2,7 @@
 PREFIX ?= /usr/local
 
 install: bin/deploy
-	cp -p $< $(PREFIX)/$<
+	@cp -p $< $(PREFIX)/$<
 
 uninstall:
 	rm -f $(PREFIX)/bin/deploy
