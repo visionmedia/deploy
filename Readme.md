@@ -84,22 +84,25 @@
     
         branch origin/master
 
+### Hooks
+
+  All hooks are arbitrary commands, executed relative to `path/current`,
+  aka the previous deployment for `pre-deploy`, and the new deployment
+  for `post-deploy`. Of course you may specify absolute paths as well.
+
 ### pre-deploy
 
-  Pre-deployment command, executed relative to `path`.
-
-      pre-deploy ./something
+      pre-deploy ./bin/something
 
 ### post-deploy
 
-  Post-deployment command, executed relative to `path`.
-    
-      post-deploy ./restart
+      post-deploy ./bin/restart
 
 ### test
 
-  Post-deployment test command, executed relative to `path`,
-  after `post-deploy`, useful for ... running tests :).
+  Post-deployment test command after `post-deploy`. If this
+  command fails, `deploy(1)` will attempt to revert to the previous
+  deployment, ignoring tests (for now), as they are assumed to have run correctly.
 
       test ./something
 
