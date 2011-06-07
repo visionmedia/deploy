@@ -106,7 +106,7 @@ run() {
   else
     local shell="ssh $url"
   fi
-  echo $shell $@ >> $LOG
+  echo $shell "\"$@\"" >> $LOG
   $shell $@
 }
 
@@ -133,10 +133,10 @@ hook() {
   local cmd=`config_get $hook`
   if test -n "$cmd"; then
     log "executing $hook \`$cmd\`"
-    run "cd $path && $cmd 2>&1 | tee -a $LOG"
+    run "cd $path && $cmd 2>&1 | tee -a $LOG; exit \${PIPESTATUS[0]}"
     test $? -eq 0 || abort "$hook hook failed"
   else
-    log "hook $hook (not-found)"
+    log "hook $hook"
   fi
 }
 
