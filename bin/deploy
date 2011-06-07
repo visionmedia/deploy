@@ -83,7 +83,7 @@ config_get() {
     && grep "^\[$ENV" -A 20 $CONFIG \
     | grep "^$key" \
     | head -n 1 \
-    | cut -d ' ' -f 2
+    | cut -d ' ' -f 2-999
 }
 
 #
@@ -132,7 +132,7 @@ hook() {
   local path=`config_get path`
   local cmd=`config_get $hook`
   if test -n "$cmd"; then
-    log "executing $hook $ $cmd"
+    log "executing $hook \`$cmd\`"
     run "cd $path && $cmd 2>&1 | tee -a $LOG"
     test $? -eq 0 || abort "$hook hook failed"
   else
@@ -183,6 +183,7 @@ deploy() {
   test $? -eq 0 || abort 'deploy log append failed'
 
   hook post-deploy
+
   hook test
 
   # done
