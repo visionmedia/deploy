@@ -183,6 +183,7 @@ deploy() {
   test $? -eq 0 || abort 'deploy log append failed'
 
   hook post-deploy
+  hook test
 
   # done
   log deploy complete
