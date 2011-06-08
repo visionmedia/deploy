@@ -18,8 +18,8 @@
 
         -C, --chdir <path>   change the working directory to <path>
         -c, --config <path>  set config path. defaults to ./deploy.conf
-        -V, --version        output program version
         -T, --no-tests       ignore test hook
+        -V, --version        output program version
         -h, --help           output help information
 
       Commands:
