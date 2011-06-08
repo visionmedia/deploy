@@ -152,7 +152,6 @@ hook() {
 setup() {
   local path=`config_get path`
   local repo=`config_get repo`
-  local branch=`config_get branch`
   run "mkdir -p $path/{shared/{logs,pids},source}"
   test $? -eq 0 || abort 'setup paths failed'
   log running setup
@@ -213,7 +212,7 @@ deploy() {
   fi
 
   # done
-  log deploy complete
+  log "successfully deployed $ref"
 }
 
 #
@@ -323,4 +322,4 @@ done
 require_env
 
 # deploy
-deploy ${REF:-`config_get branch`}
+deploy ${REF:-`config_get ref`}

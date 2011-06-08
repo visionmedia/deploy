@@ -44,7 +44,7 @@
     host n.n.n.n
     repo git@github.com:visionmedia/express.git
     path /var/www/myapp.com
-    branch origin/master
+    ref origin/master
     post-deploy /var/www/myapp.com/update.sh
 
 ## Directives
@@ -79,11 +79,15 @@
     
         path /var/www/myapp.com
 
-### branch
+### ref
 
-  GIT branch.
+  When specified, __HEAD__ is reset to `ref`. When deploying
+  production typically this will _not_ be used, as `deploy(1)` will
+  utilize the most recent tag by default, however this is useful
+  for a staging environment, as shown below where __HEAD__ is updated
+  and set to the develop branch.
     
-        branch origin/master
+        ref origin/develop
 
 ### Hooks
 
