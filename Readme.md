@@ -55,6 +55,16 @@
   
       key /path/to/some.pem
 
+### ref (optional)
+
+  When specified, __HEAD__ is reset to `ref`. When deploying
+  production typically this will _not_ be used, as `deploy(1)` will
+  utilize the most recent tag by default, however this is useful
+  for a staging environment, as shown below where __HEAD__ is updated
+  and set to the develop branch.
+    
+        ref origin/develop
+
 ### user
 
   User for deployment.
@@ -78,16 +88,6 @@
   Deployment path.
     
         path /var/www/myapp.com
-
-### ref
-
-  When specified, __HEAD__ is reset to `ref`. When deploying
-  production typically this will _not_ be used, as `deploy(1)` will
-  utilize the most recent tag by default, however this is useful
-  for a staging environment, as shown below where __HEAD__ is updated
-  and set to the develop branch.
-    
-        ref origin/develop
 
 ### Hooks
 
