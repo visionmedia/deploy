@@ -20,6 +20,7 @@ usage() {
 
     -C, --chdir <path>   change the working directory to <path>
     -c, --config <path>  set config path. defaults to ./deploy.conf
+    -T, --no-tests       ignore test hook
     -V, --version        output program version
     -h, --help           output help information
 
@@ -287,6 +288,7 @@ while test $# -ne 0; do
     -V|--version) version; exit ;;
     -c|--config) set_config_path $1; shift ;;
     -C|--chdir) log cd $1; cd $1; shift ;;
+    -T|--no-tests) TEST=0 ;;
     run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
     curr|current) require_env; current_commit; exit ;;
     prev|previous) require_env; nth_deploy_commit 2; exit ;;
