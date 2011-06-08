@@ -169,13 +169,26 @@ setup() {
 deploy() {
   local ref=$1
   local path=`config_get path`
-  log deploying $ref
+  log deploying
 
   hook pre-deploy || abort "pre-deploy hook failed"
 
   # fetch source
-  run "cd $path/source && git fetch origin && git reset --hard $ref"
+  log "fetching updates"
+  run "cd $path/source && git fetch origin --tags"
   test $? -eq 0 || abort 'fetch failed'
+
+  # latest tag
+  log "fetching latest tag"
+  ref=`run "cd $path/source && git for-each-ref refs/tags \
+    --sort=-authordate \
+    --format='%(refname)' \
+    --count=1 | cut -d '/' -f 3"`
+  test $? -eq 0 || abort 'failed to determine latest tag'
+
+  # reset HEAD
+  log "resetting HEAD to $ref"
+  run "git reset --hard $ref"
 
   # link current
   run "ln -sfn $path/source $path/current"
