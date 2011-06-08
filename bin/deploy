@@ -316,7 +316,7 @@ while test $# -ne 0; do
       if test -z "$ENV"; then
         ENV=$arg;
       else
-        REF=$arg;
+        REF="$REF $arg";
       fi
       ;;
   esac
