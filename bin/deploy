@@ -187,7 +187,7 @@ deploy() {
 
   # reset HEAD
   log "resetting HEAD to $ref"
-  run "git reset --hard $ref"
+  run "cd $path/source && git reset --hard $ref"
 
   # link current
   run "ln -sfn $path/source $path/current"
