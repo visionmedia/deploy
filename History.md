@@ -1,4 +1,11 @@
 
+0.3.0 / 2011-06-08 
+==================
+
+  * Added optional ref support, defaults to latest tag
+  * Added `-T, --no-tests`
+  * Changed `branch` setting to `ref`
+
 0.2.0 / 2011-06-07 
 ==================
 
