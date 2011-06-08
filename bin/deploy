@@ -63,7 +63,7 @@ log() {
 #
 
 set_config_path() {
-  test -f $1 || abort 'invalid --config path'
+  test -f $1 || abort invalid --config path
   CONFIG=$1
 }
 
@@ -129,7 +129,7 @@ config() {
 #
 
 hook() {
-  test -n "$1" || abort 'hook name required'
+  test -n "$1" || abort hook name required
   local hook=$1
   local path=`config_get path`
   local cmd=`config_get $hook`
@@ -141,7 +141,7 @@ hook() {
       exit \${PIPESTATUS[0]}"
     test $? -eq 0
   else
-    log "hook $hook"
+    log hook $hook
   fi
 }
 
@@ -153,11 +153,11 @@ setup() {
   local path=`config_get path`
   local repo=`config_get repo`
   run "mkdir -p $path/{shared/{logs,pids},source}"
-  test $? -eq 0 || abort 'setup paths failed'
+  test $? -eq 0 || abort setup paths failed
   log running setup
   log cloning $repo
   run "git clone $repo $path/source"
-  test $? -eq 0 || abort "failed to clone"
+  test $? -eq 0 || abort failed to clone
   log setup complete
 }
 
@@ -170,52 +170,52 @@ deploy() {
   local path=`config_get path`
   log deploying
 
-  hook pre-deploy || abort "pre-deploy hook failed"
+  hook pre-deploy || abort pre-deploy hook failed
 
   # fetch source
-  log "fetching updates"
+  log fetching updates
   run "cd $path/source && git fetch origin --tags"
-  test $? -eq 0 || abort 'fetch failed'
+  test $? -eq 0 || abort fetch failed
 
   # latest tag
   if test -z "$ref"; then
-    log "fetching latest tag"
+    log fetching latest tag
     ref=`run "cd $path/source && git for-each-ref refs/tags \
       --sort=-authordate \
       --format='%(refname)' \
       --count=1 | cut -d '/' -f 3"`
-    test $? -eq 0 || abort 'failed to determine latest tag'
+    test $? -eq 0 || abort failed to determine latest tag
   fi
 
   # reset HEAD
-  log "resetting HEAD to $ref"
+  log resetting HEAD to $ref
   run "cd $path/source && git reset --hard $ref"
-  test $? -eq 0 || abort "git reset failed"
+  test $? -eq 0 || abort git reset failed
 
   # link current
   run "ln -sfn $path/source $path/current"
-  test $? -eq 0 || abort 'symlink failed'
+  test $? -eq 0 || abort symlink failed
 
   # deploy log
   run "cd $path/source && \
       echo \`git rev-parse --short HEAD\` \
       >> $path/.deploys"
-  test $? -eq 0 || abort 'deploy log append failed'
+  test $? -eq 0 || abort deploy log append failed
 
-  hook post-deploy || abort "post-deploy hook failed"
+  hook post-deploy || abort post-deploy hook failed
 
   if test $TEST -eq 1; then
     hook test
     if test $? -ne 0; then
-      log "tests failed, reverting deploy"
+      log tests failed, reverting deploy
       quickly_revert_to 1 && log "revert complete" && exit
     fi
   else
-    log 'ignoring tests'
+    log ignoring tests
   fi
 
   # done
-  log "successfully deployed $ref"
+  log successfully deployed $ref
 }
 
 #
