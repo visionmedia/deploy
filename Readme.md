@@ -32,7 +32,7 @@
         prev[ious]           output previous release commit
         exec|run <cmd>       execute the given <cmd>
         list                 list previous deploy commits
-        [ref]                deploy to [ref] or HEAD
+        [ref]                deploy to [ref], the 'ref' setting, or latest tag
 
 ## Configuration
 

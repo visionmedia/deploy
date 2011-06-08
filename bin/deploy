@@ -34,7 +34,7 @@ usage() {
     prev[ious]           output previous release commit
     exec|run <cmd>       execute the given <cmd>
     list                 list previous deploy commits
-    [ref]                deploy to [ref] or HEAD
+    [ref]                deploy to [ref], the 'ref' setting, or latest tag
 
 EOF
 }
@@ -162,7 +162,7 @@ setup() {
 }
 
 #
-# Deploy <ref>.
+# Deploy [ref].
 #
 
 deploy() {
@@ -178,16 +178,19 @@ deploy() {
   test $? -eq 0 || abort 'fetch failed'
 
   # latest tag
-  log "fetching latest tag"
-  ref=`run "cd $path/source && git for-each-ref refs/tags \
-    --sort=-authordate \
-    --format='%(refname)' \
-    --count=1 | cut -d '/' -f 3"`
-  test $? -eq 0 || abort 'failed to determine latest tag'
+  if test -z "$ref"; then
+    log "fetching latest tag"
+    ref=`run "cd $path/source && git for-each-ref refs/tags \
+      --sort=-authordate \
+      --format='%(refname)' \
+      --count=1 | cut -d '/' -f 3"`
+    test $? -eq 0 || abort 'failed to determine latest tag'
+  fi
 
   # reset HEAD
   log "resetting HEAD to $ref"
   run "cd $path/source && git reset --hard $ref"
+  test $? -eq 0 || abort "git reset failed"
 
   # link current
   run "ln -sfn $path/source $path/current"
