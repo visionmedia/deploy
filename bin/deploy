@@ -174,7 +174,7 @@ deploy() {
 
   # fetch source
   log fetching updates
-  run "cd $path/source && git fetch origin --tags"
+  run "cd $path/source && git fetch origin --all"
   test $? -eq 0 || abort fetch failed
 
   # latest tag
