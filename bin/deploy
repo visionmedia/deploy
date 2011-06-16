@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-VERSION="0.3.1"
+VERSION="0.3.2"
 CONFIG=./deploy.conf
 LOG=/tmp/deploy.log
 TEST=1

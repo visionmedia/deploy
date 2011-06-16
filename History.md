@@ -1,4 +1,9 @@
 
+0.3.2 / 2011-06-16 
+==================
+
+  * Trying `git fetch --all` to solve a ref issue we are having
+
 0.3.1 / 2011-06-08 
 ==================
 
