@@ -33,6 +33,7 @@ usage() {
     curr[ent]            output current release commit
     prev[ious]           output previous release commit
     exec|run <cmd>       execute the given <cmd>
+    console              open an ssh session to the host
     list                 list previous deploy commits
     [ref]                deploy to [ref], the 'ref' setting, or latest tag
 
@@ -110,6 +111,22 @@ run() {
   fi
   echo $shell "\"$@\"" >> $LOG
   $shell $@
+}
+
+#
+# Launch an interactive ssh console session.
+#
+
+console() {
+  local url="`config_get user`@`config_get host`"
+  local key=`config_get key`
+  if test -n "$key"; then
+    local shell="ssh -i $key $url"
+  else
+    local shell="ssh $url"
+  fi
+  echo $shell
+  exec $shell
 }
 
 #
@@ -305,6 +322,7 @@ while test $# -ne 0; do
     -C|--chdir) log cd $1; cd $1; shift ;;
     -T|--no-tests) TEST=0 ;;
     run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
+    console) require_env; console; exit ;;
     curr|current) require_env; current_commit; exit ;;
     prev|previous) require_env; nth_deploy_commit 2; exit ;;
     revert) require_env; revert_to ${1-1}; exit ;;
