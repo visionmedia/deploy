@@ -113,6 +113,10 @@ run() {
   $shell $@
 }
 
+#
+# Launch an interactive ssh console session.
+#
+
 console() {
   local url="`config_get user`@`config_get host`"
   local key=`config_get key`
