@@ -53,7 +53,7 @@
 ### key (optional)
 
   Path to identity file used by `ssh -i`.
-  
+
       key /path/to/some.pem
 
 ### ref (optional)
@@ -63,32 +63,40 @@
   utilize the most recent tag by default, however this is useful
   for a staging environment, as shown below where __HEAD__ is updated
   and set to the develop branch.
-    
+
         ref origin/develop
 
 ### user
 
   User for deployment.
-   
+
        user deployer
 
 ### host
 
   Server hostname.
-   
+
        host 50.17.255.50
 
 ### repo
 
   GIT repository to clone.
-   
+
        repo git@github.com:visionmedia/express.git
 
 ### path
 
   Deployment path.
-    
+
         path /var/www/myapp.com
+
+### forward-agent
+
+  Webhosts normally use read-only deploy keys to access private git repositories.
+  If you'd rather use the credentials of the person invoking the deploy
+  command, put `forward-agent yes` in the relevant config sections.
+  Now the deploy script will invoke `ssh -A` when deploying and there's
+  no need to keep SSH keys on your servers.
 
 ### Hooks
 
@@ -112,7 +120,7 @@
 
       test ./something
 
-## License 
+## License
 
 (The MIT License)
 

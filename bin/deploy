@@ -98,17 +98,25 @@ version() {
 }
 
 #
+# Return the ssh command to run.
+#
+
+ssh_command() {
+  local url="`config_get user`@`config_get host`"
+  local key="`config_get key`"
+  local forward_agent="`config_get forward-agent`"
+
+  test -n "$forward_agent" && local agent="-A"
+  test -n "$key" && local identity="-i $key"
+  echo "ssh $agent $identity $url"
+}
+
+#
 # Run the given remote <cmd>.
 #
 
 run() {
-  local url="`config_get user`@`config_get host`"
-  local key=`config_get key`
-  if test -n "$key"; then
-    local shell="ssh -i $key $url"
-  else
-    local shell="ssh $url"
-  fi
+  local shell="`ssh_command`"
   echo $shell "\"$@\"" >> $LOG
   $shell $@
 }
@@ -118,13 +126,7 @@ run() {
 #
 
 console() {
-  local url="`config_get user`@`config_get host`"
-  local key=`config_get key`
-  if test -n "$key"; then
-    local shell="ssh -i $key $url"
-  else
-    local shell="ssh $url"
-  fi
+  local shell="`ssh_command`"
   echo $shell
   exec $shell
 }
