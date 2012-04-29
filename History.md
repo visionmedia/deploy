@@ -1,4 +1,9 @@
 
+0.5.0 / 2012-04-29 
+==================
+
+  * Added forward agent directive support [bronson]
+
 0.4.0 / 2011-07-27 
 ==================
 
