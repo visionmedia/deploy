@@ -309,8 +309,9 @@ require_env() {
 #
 
 check_for_local_changes() {
-  git --no-pager diff --exit-code --quiet || abort "commit or stash your changes before deploying"
-  [ -z "`git rev-list @{upstream}.. -n 1 --quiet`" ] || abort "push your changes before deploying"
+  git --no-pager diff --exit-code --quiet          || abort "commit or stash your changes before deploying"
+  git --no-pager diff --exit-code --quiet --cached || abort "commit your staged changes before deploying"
+  [ -z "`git rev-list @{upstream}.. -n 1`" ]       || abort "push your changes before deploying"
 }
 
 #
