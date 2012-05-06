@@ -305,6 +305,15 @@ require_env() {
 }
 
 #
+# Ensure all changes are committed and pushed before deploying.
+#
+
+check_for_local_changes() {
+  git --no-pager diff --exit-code --quiet || abort "commit or stash your changes before deploying"
+  [ -z "`git rev-list @{upstream}.. -n 1 --quiet`" ] || abort "push your changes before deploying"
+}
+
+#
 # Update deploy.
 #
 
@@ -350,6 +359,7 @@ while test $# -ne 0; do
 done
 
 require_env
+check_for_local_changes
 
 # deploy
 deploy "${REF:-`config_get ref`}"
