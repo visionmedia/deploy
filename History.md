@@ -1,4 +1,10 @@
 
+0.6.0 / 2012-06-19 
+==================
+
+  * Changed `console` command to cd to current [bronson]
+  * Changed `run` command to cd to current [bronson]
+
 0.5.0 / 2012-04-29 
 ==================
 

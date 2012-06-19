@@ -7,7 +7,7 @@
 # https://github.com/visionmedia/deploy
 #
 
-VERSION="0.5.0"
+VERSION="0.6.0"
 CONFIG=./deploy.conf
 LOG=/tmp/deploy.log
 TEST=1
