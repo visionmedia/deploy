@@ -133,9 +133,10 @@ run() {
 #
 
 console() {
+  local path="`config_get path`/current"
   local shell="`ssh_command`"
-  echo $shell
-  exec $shell
+  echo $shell -t "cd $path; bash --login"
+  exec $shell -t "cd $path; bash --login"
 }
 
 #
