@@ -340,7 +340,7 @@ while test $# -ne 0; do
     -c|--config) set_config_path $1; shift ;;
     -C|--chdir) log cd $1; cd $1; shift ;;
     -T|--no-tests) TEST=0 ;;
-    run|exec) require_env; run "cd `config_get path` && $@"; exit ;;
+    run|exec) require_env; run "cd `config_get path`/current && $@"; exit ;;
     console) require_env; console; exit ;;
     curr|current) require_env; current_commit; exit ;;
     prev|previous) require_env; nth_deploy_commit 2; exit ;;
