@@ -112,10 +112,12 @@ ssh_command() {
   local url="`config_get user`@`config_get host`"
   local key="`config_get key`"
   local forward_agent="`config_get forward-agent`"
+  local port="`config_get port`"
 
   test -n "$forward_agent" && local agent="-A"
   test -n "$key" && local identity="-i $key"
-  echo "ssh $agent $identity $url"
+  test -n "$port" && local port="-p $port"
+  echo "ssh $agent $port $identity $url"
 }
 
 #
