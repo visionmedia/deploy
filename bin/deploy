@@ -187,6 +187,8 @@ setup() {
   log cloning $repo
   run "git clone $repo $path/source"
   test $? -eq 0 || abort failed to clone
+  run "ln -sfn $path/source $path/current"
+  test $? -eq 0 || abort symlink failed
   log setup complete
 }
 
