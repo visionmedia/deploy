@@ -113,11 +113,13 @@ ssh_command() {
   local key="`config_get key`"
   local forward_agent="`config_get forward-agent`"
   local port="`config_get port`"
+  local needs_tty="`config_get needs_tty`"
 
   test -n "$forward_agent" && local agent="-A"
   test -n "$key" && local identity="-i $key"
   test -n "$port" && local port="-p $port"
-  echo "ssh $agent $port $identity $url"
+  test -n "$needs_tty" && local tty="-t"
+  echo "ssh $tty $agent $port $identity $url"
 }
 
 #
