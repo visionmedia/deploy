@@ -98,7 +98,14 @@
   Now the deploy script will invoke `ssh -A` when deploying and there's
   no need to keep SSH keys on your servers.
 
-### Hooks
+### needs_tty
+
+  If your deployment scripts require any user interaction (which they shouldn't, but
+  often do) you'll probably want SSH to allocate a tty for you. Put `needs_tty yes`
+  in the config section if you'd like the deploy script to invoke `ssh -t` and ensure
+  you have a tty available.
+
+## Hooks
 
   All hooks are arbitrary commands, executed relative to `path/current`,
   aka the previous deployment for `pre-deploy`, and the new deployment
