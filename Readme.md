@@ -1,7 +1,7 @@
 
 # deploy
 
-  Minimalistic shell deployment shell script.
+  Minimalistic deployment shell script.
 
 ## Installation
 
