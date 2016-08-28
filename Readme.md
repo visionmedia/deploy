@@ -43,6 +43,7 @@
     key /path/to/some.pem
     user deployer
     host n.n.n.n
+    port nn
     repo git@github.com:visionmedia/express.git
     path /var/www/myapp.com
     ref origin/master
@@ -77,6 +78,12 @@
   Server hostname.
 
        host 50.17.255.50
+
+### port (optional)
+
+  Server port.
+
+       port 22
 
 ### repo
 
